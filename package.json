@@ -1,0 +1,13 @@
+{
+  "name": "parts-stock",
+  "productName": "零件库存对照",
+  "version": "1.0.0",
+  "private": true,
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "45.4.1"
+  }
+}

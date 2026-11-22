@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>零件库存对照</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">嘉立创 BOM</p>
+      <h1>零件库存对照</h1>
+      <p class="rule">用 Comment、Footprint、Value 对库存。这三项有一项对不上，就是没有这颗料。三项都对上、只有 Manufacturer Part 不同，橙色标出，表示耐压或其他参数不一致。</p>
+    </div>
+    <p class="stock-count" id="stockCount">正在读取库存</p>
+  </header>
+
+  <div class="tabs">
+    <button type="button" class="tab active" data-tab="check">BOM 对照</button>
+    <button type="button" class="tab" data-tab="stock">当前库存</button>
+  </div>
+
+  <main>
+    <section id="panel-check">
+      <form id="drop" class="drop">
+        <input id="file" type="file" accept=".csv,.tsv,.txt,text/csv">
+        <p>把嘉立创导出的 BOM 拖到这里，或点此选择文件</p>
+        <span>支持 CSV，包括嘉立创这种 UTF-16 表格</span>
+      </form>
+      <p id="checkError" class="error" hidden></p>
+      <div id="result" hidden>
+        <div class="summary" id="summary"></div>
+        <div class="filters">
+          <button type="button" class="filter active" data-filter="all">全部</button>
+          <button type="button" class="filter" data-filter="missing">没有</button>
+          <button type="button" class="filter" data-filter="param">参数不符</button>
+          <button type="button" class="filter" data-filter="match">有</button>
+          <button type="button" id="exportMissing" class="export">导出没有的 BOM</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>结果</th>
+                <th>位号</th>
+                <th>Comment</th>
+                <th>Footprint</th>
+                <th>Value</th>
+                <th>库存数量</th>
+                <th>BOM 厂家型号</th>
+                <th>库存备注 + 厂家型号</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-stock" hidden>
+      <form id="inbound" class="inbound">
+        <input name="comment" required placeholder="Comment">
+        <input name="footprint" placeholder="Footprint">
+        <input name="value" placeholder="Value">
+        <input name="mpn" placeholder="Manufacturer Part">
+        <input name="qty" type="number" min="0" step="any" value="1" required placeholder="数量">
+        <input name="note" placeholder="备注，例如耐压 50V">
+        <button type="submit">入库</button>
+        <p id="inboundMsg"></p>
+      </form>
+      <div class="toolbar">
+        <input id="stockSearch" type="search" placeholder="搜索 Comment、封装、数值、厂家型号">
+        <p id="stockSource"></p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Comment</th>
+              <th>Footprint</th>
+              <th>Value</th>
+              <th>库存数量</th>
+              <th>备注</th>
+              <th>Manufacturer Part</th>
+              <th>厂家</th>
+              <th>立创编号</th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
